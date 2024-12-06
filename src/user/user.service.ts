@@ -24,7 +24,7 @@ export class UserService {
 
     users.push(user);
 
-    await this.dbservice.writer(users);
+    await this.dbservice.write(users);
     return user;
   }
 
