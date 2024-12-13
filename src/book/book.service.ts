@@ -17,8 +17,8 @@ export class BookService {
     const books: Book[] = await this.dbService.read();
     return name
       ? books.filter(book => {
-          return book.name.includes(name);
-        })
+        return book.name.includes(name);
+      })
       : books;
   }
 
@@ -46,7 +46,7 @@ export class BookService {
   async update(updateBookDto: UpdateBookDto) {
     const books: Book[] = await this.dbService.read();
     const foundBook = books.find(book => book.id === updateBookDto.id);
-    if (foundBook) {
+    if (!foundBook) {
       throw new BadRequestException('该图书不存在');
     }
 
@@ -63,7 +63,7 @@ export class BookService {
     const index = books.findIndex(book => book.id === id);
 
     if (index !== -1) {
-      books.slice(index, 1);
+      books.splice(index, 1);
       await this.dbService.write(books);
     }
   }

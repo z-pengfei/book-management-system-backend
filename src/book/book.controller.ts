@@ -2,9 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseInterceptors
@@ -18,7 +20,7 @@ import * as path from 'path';
 
 @Controller('book')
 export class BookController {
-  constructor(private readonly bookService: BookService) {}
+  constructor(private readonly bookService: BookService) { }
 
   @Post('upload')
   @UseInterceptors(
@@ -39,7 +41,6 @@ export class BookController {
     })
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log('file', file);
     return file.path;
   }
 
@@ -58,13 +59,13 @@ export class BookController {
     return this.bookService.create(createBookDto);
   }
 
-  @Post('update')
+  @Put('update')
   async update(@Body() updateBookDto: UpdateBookDto) {
     return this.bookService.update(updateBookDto);
   }
 
-  @Post('delete/:id')
-  async delete(@Body() id: string) {
+  @Delete('delete/:id')
+  async delete(@Param('id') id: string) {
     return this.bookService.delete(+id);
   }
 }
